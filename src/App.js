@@ -3,6 +3,7 @@ import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilde';
 import {Switch, Route} from 'react-router-dom';
 import Checkout from './containers/Checkout/Checkout';
+import Orders from './containers/Orders/Orders';
 import styles from './App.module.scss';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Layout>
         <Switch>
           <Route component={Checkout} path = '/checkout'/>
+          <Route component={Orders} path = '/orders'/>
           <Route component={BurgerBuilder} path = '/'/>
         </Switch>
       </Layout>

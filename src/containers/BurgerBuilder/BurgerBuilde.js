@@ -90,30 +90,12 @@ class BurgerBuilder extends Component {
         for (let i  in this.state.ingrediens) {
             query.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingrediens[i]));
         }
-
+        query.push('price='+this.state.totalPrice);
         const queryString = query.join('&');
-
         this.props.history.push({
             pathname: '/checkout',
             search: '?' + queryString
         });
-        // this.setState({loading: true});
-        // const  order ={
-        //     ingrediens: this.state.ingrediens,
-        //     price: this.state.totalPrice,
-        //     customer: {
-        //         name: 'Ilya Cheburov',
-        //         address: {
-        //             street: 'test',
-        //             country: 'Russia'
-        //         },
-        //         email: 'test@test.ru'
-        //     },
-        //     deliveryMethod: 'faaster'
-        // }
-        // axios.post('/orders.json', order)
-        // .then(response => this.setState({loading: false, purchasing: false}))
-        // .catch(error => this.setState({loading: false, purchasing: false}));
     }
     
     render() {
