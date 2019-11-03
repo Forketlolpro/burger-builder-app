@@ -1,6 +1,7 @@
 import React from 'react';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+import {BrowserRouter} from 'react-router-dom';
 import Aux from '../../hoc/Auxx';
 
 import styles from './Layout.module.scss';
@@ -25,13 +26,13 @@ class Layout extends React.Component {
     
     render () {
         return (
-            <Aux>
+            <BrowserRouter>
                 <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler}/>
                 <SideDrawer open={this.state.showSideDrawer} closed={this.sideDrawerCloseHandler}/>
                 <main className={styles.Content}>
                     {this.props.children}
                 </main>
-            </Aux>
+            </BrowserRouter>
         )
     }
 }
