@@ -36,7 +36,7 @@ class Checkout extends React.Component {
 
     render () {
         return (
-        <div>
+        <div className = {styles.Checkout}>
             <CheckoutSummary
                 ingredients = {this.state.ingredients}
                 checkoutCancelled={this.checkoutCancelled}

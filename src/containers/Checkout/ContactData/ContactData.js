@@ -3,14 +3,58 @@ import axios from '../../../axios-orders';
 import styles from './ContactData.module.scss';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends React.Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+        orderForm: {
+            name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Name' 
+                },
+                value: ''
+            },
+            street: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Street' 
+                },
+                value: ''
+            },
+            zipCode: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Zip Code' 
+                },
+                value: ''
+            },
+            country: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Country' 
+                },
+                value: ''
+            },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'email',
+                    placeholder: 'Email' 
+                },
+                value: ''
+            },
+            deliveryMethod: {
+                elementType: 'select',
+                elementConfig: {
+                    options: [{value: 'fastest', displayValue: 'Fastest'}, {value: 'cheapest', displayValue: 'Cheapest'}]
+                },
+                value: ''
+            }
         },
         loading: false
     };
@@ -31,14 +75,36 @@ class ContactData extends React.Component {
         .catch(error => this.setState({loading: false}));
     }
 
+    inputChangedHandler = (e, input) => {
+        const updateOrderForm = {
+            ...this.state.orderForm
+        };
+        const updatedFormElement = {...updateOrderForm[input]};
+        updatedFormElement.value = e.target.value;
+        updateOrderForm[input] = updatedFormElement;
+
+        this.setState({orderForm: updateOrderForm});
+    }
+
 
     render () {
+        let formElementsArray = [];
+        for (let key in this.state.orderForm) {
+            formElementsArray.push({
+                id: key,
+                config: this.state.orderForm[key]
+            })
+        };
+
         let form = (
         <form>
-            <input type ="text" name ="name" placeholder="name"></input>
-            <input type ="email" name ="email" placeholder="email"></input>
-            <input type ="text" name ="street" placeholder="street"></input>
-            <input type ="text" name ="postal" placeholder="postal"></input>
+            {formElementsArray.map(elem => {
+                return <Input key={elem.id}
+                elementType={elem.config.elementType} 
+                elementConfig={elem.config.elementConfig} 
+                value={elem.config.value} 
+                changed={(event) => this.inputChangedHandler(event, elem.id)}/>
+            })}
             <Button type ="Success" clicked={this.orderHandler}>Order</Button>
         </form>);
         if (this.state.loading) {
