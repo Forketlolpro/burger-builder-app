@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import * as actionTypes from '../../store/actions';
+import * as burgerBuilderActions from '../../store/actions/actions';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Aux from '../../hoc/Auxx';
@@ -8,7 +8,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withArrorHandler from '../../hoc/withArrorHandler/withArrorHandler';
-import axios from '../../axios-orders';
+import axios from '../../axios-instance';
 
 
 class BurgerBuilder extends Component {
@@ -22,21 +22,16 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount () {
-        // axios.get('https://burger-builder-react-app-3d9ac.firebaseio.com/ingredients.json')
-        // .then (res => {
-        //     this.setState({ingrediens: res.data})
-        // })
-        // .catch(error => {
-        //     this.setState({error: true})
-        // })
+        this.props.onInitIngredients();
     }
+
     //вот тут можно улучшить
     updatePurchaseState = (updatedIngridient = this.props.ingrediens) => {
         const ingrediens = {...updatedIngridient};
         const sum = Object.keys(ingrediens)
         .map((key) => {
                 return ingrediens[key];
-        }).reduce((sum, elem)=>{
+        }).reduce((sum, elem)=>{    
             return sum + elem;
         },0);
 
@@ -64,7 +59,7 @@ class BurgerBuilder extends Component {
 
         let orderSummary = null;
 
-        let burger = (this.state.error ? <p>Error</p> : <Spinner/>)
+        let burger = (this.props.error ? <p>Error</p> : <Spinner/>)
 
         if (this.props.ingrediens) {
             burger = (
@@ -103,15 +98,17 @@ class BurgerBuilder extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onIngredientAdd: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENTS, name: ingName}),
-        onIngredientRemove: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENTS, name: ingName}),
+        onIngredientAdd: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
+        onIngredientRemove: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         ingrediens: state.ingrediens,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        error: state.error
     }
 }
 

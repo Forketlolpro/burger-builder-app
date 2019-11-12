@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from '../../axios-orders';
+import axios from '../../axios-instance';
 import Order from '../../components/Checkout/Order/Order';
 import withErrorHandler from '../../hoc/withArrorHandler/withArrorHandler';
 
